@@ -62,5 +62,18 @@ describe('API  Spotify', () => {
         expect(result.status).toBe(422);
         expect(result.type).toBe("application/json")
     })
+    test("Deve retornar 204 e um JSON para DELETE /musicas/id", async () => {
+        const result = await request
+            .delete(`/musicas/${id}`);
+        expect(result.status).toBe(204);
+        expect(result.type).toBe("");
+    })
+    test("Deve retornar 404 e um JSON para DELETE /musicas/id", async () => {
+        const result = await request
+            .delete(`/musicas/id`)
+        expect(result.status).toBe(404);
+        expect(result.type).toBe("application/json")
+    })
+
 
 })
