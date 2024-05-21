@@ -10,5 +10,6 @@ router.get("/", controllerMusicas.listarTodos);
 
 router.get("/:id", controllerMusicas.buscarPeloId, controllerMusicas.obter);
 
+router.put("/:id", controllerMusicas.buscarPeloId, controllerMusicas.validar, controllerMusicas.atualizar);
 
 module.exports = router;
