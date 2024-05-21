@@ -1,9 +1,11 @@
-const express = require('express');
+const express = require("express");
+
+const controllerMusicas = require("../controllers/controller_musica");
 
 const router = express.Router();
 
-router.post("/musicas", (req, res) => {
-    res.status(201).json({"cantor": "Drake", "musica": "God's Plan"})
-})
+router.post("/", controllerMusicas.validar, controllerMusicas.criar);
+
+
 
 module.exports = router;
