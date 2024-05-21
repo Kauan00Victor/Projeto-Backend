@@ -12,4 +12,6 @@ router.get("/:id", controllerMusicas.buscarPeloId, controllerMusicas.obter);
 
 router.put("/:id", controllerMusicas.buscarPeloId, controllerMusicas.validar, controllerMusicas.atualizar);
 
+router.delete("/:id", controllerMusicas.buscarPeloId, controllerMusicas.remover);
+
 module.exports = router;
