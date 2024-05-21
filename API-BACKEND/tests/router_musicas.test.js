@@ -42,5 +42,25 @@ describe('API  Spotify', () => {
         expect(result.status).toBe(404);
         expect(result.type).toBe("application/json")
     })
+    test("Deve retornar 200 e um JSON para PUT /musicas/id", async () => {
+        const result = await request
+            .put(`/musicas/${id}`)
+            .send({ cantor: "Tyler the Creator", nome: "EARTHQUAKE" });
+        expect(result.status).toBe(200);
+        expect(result.type).toBe("application/json")
+    })
+    test("Deve retornar 404 e um JSON para PUT /musicas/id", async () => {
+        const result = await request
+            .put(`/musicas/id`);
+        expect(result.status).toBe(404);
+        expect(result.type).toBe("application/json")
+    })
+    test("Deve retornar 422 e um JSON para PUT /musicas/id", async () => {
+        const result = await request
+            .put(`/musicas/${id}`)
+            .send({});
+        expect(result.status).toBe(422);
+        expect(result.type).toBe("application/json")
+    })
 
 })
