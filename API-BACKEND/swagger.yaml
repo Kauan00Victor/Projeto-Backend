@@ -3,10 +3,10 @@ info:
   title: API SPOTIFY
   version: 0.0.1
 tags:
-  - musicas
+  - name: musicas
 paths:
   /musicas:
-    post: 
+    post:
       tags:
         - musicas
       requestBody:
@@ -15,82 +15,127 @@ paths:
             schema:
               $ref: '#/components/schemas/Musicas'
       responses:
-        201:
+        '201':
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Musicas'
-        422:
-          content:
-            appication/json:
-              schema:
-                $ref: '#/components/schemas/Mensagem'
-          get:
-      tags:
-        - musicas
-      responses:
-        200:
+        '422':
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ArrayOfmusicas'
-      security: 
-        - JWTAuth : []
-    /musicas/{id}:
+                $ref: '#/components/schemas/Mensagem'
+    get:
+      tags:
+        - musicas
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArrayOfMusicas'
+      security:
+        - JWTAuth: []
+  /musicas/{id}:
     get:
       tags:
         - musicas
       parameters:
         - in: path
-          type: string
           name: id
+          schema:
+            type: string
       responses:
-        200:
+        '200':
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Musicas'
-        400:
+        '400':
           content:
             application/json:
               schema:
-                $ref: '#/components/schema/Mensagem'
-        404:
+                $ref: '#/components/schemas/Mensagem'
+        '404':
           content:
             application/json:
               schema:
-                $ref: '#/components/schema/Mensagem'
+                $ref: '#/components/schemas/Mensagem'
     put:
       tags:
         - musicas
       parameters:
         - in: path
-          type: string
           name: id
+          schema:
+            type: string
       requestBody:
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/Musicas'
       responses:
-        200:
+        '200':
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Musicas'
-        400:
+        '400':
           content:
             application/json:
               schema:
-                $ref: '#/components/schema/Mensagem'
-        404:
+                $ref: '#/components/schemas/Mensagem'
+        '404':
           content:
             application/json:
               schema:
-                $ref: '#/components/schema/Mensagem'        
-        422:
+                $ref: '#/components/schemas/Mensagem'
+        '422':
           content:
-            appication/json:
+            application/json:
               schema:
-                $ref: '#/components/schemas/Mensagem'        
+                $ref: '#/components/schemas/Mensagem'
+    delete:
+      tags:
+        - musicas
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+      responses:
+        '204':
+          description: No Content
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mensagem'
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mensagem'
 components:
+  securitySchemes:
+    JWTAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+  schemas:
+    ArrayOfMusicas:
+      type: array
+      items:
+        $ref: '#/components/schemas/Musicas'
+    Musicas:
+      type: object
+      properties:
+        cantor:
+          type: string
+        nome:
+          type: string
+    Mensagem:
+      type: object
+      properties:
+        msg:
+          type: string
