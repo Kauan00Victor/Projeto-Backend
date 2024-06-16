@@ -5,4 +5,5 @@ const musicaSchema = new mongoose.Schema({
     nome: {type: String, require: true, trim: true},
 })
 
+
 module.exports = mongoose.model("Musicas", musicaSchema)

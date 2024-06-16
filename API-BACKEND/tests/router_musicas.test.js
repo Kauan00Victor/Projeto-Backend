@@ -89,6 +89,7 @@ describe('API Spotify', () => {
             .delete(`/musicas/${id}`);
         expect(result.status).toBe(204);
         expect(result.type).toBe("");
+        
     });
 
     test("Deve retornar 404 e um JSON para DELETE /musicas/id", async () => {
@@ -96,5 +97,7 @@ describe('API Spotify', () => {
             .delete(`/musicas/id`);
         expect(result.status).toBe(404);
         expect(result.type).toBe("application/json");
+
     });
+
 });
