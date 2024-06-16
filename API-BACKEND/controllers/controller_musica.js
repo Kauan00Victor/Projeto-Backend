@@ -25,13 +25,13 @@ async function buscarPeloId(req, res, next) {
         const id = new mongoose.Types.ObjectId(req.params.id);
         const musica = await Musica.findOne({ _id: id });
         if (musica) {
+            req.musica = musica; 
             next();
-        }
-        else {
-            res.status(404).json({ msg: "Musica nao enontrada" });
+        } else {
+            res.status(404).json({ msg: "Música não encontrada" });
         }
     } catch (err) {
-        res.status(400).json({ msg: "Id Inválido" });
+        res.status(400).json({ msg: "ID inválido" });
     }
 }
 
@@ -42,18 +42,32 @@ async function obter(req, res) {
 }
 
 async function atualizar(req, res) {
-    const id = new mongoose.Types.ObjectId(req.params.id);
-    const musica = await Musica.findOneAndUpdate({ _id: id }, req.body);
-    res.json(musica);
+    try {
+        const id = new mongoose.Types.ObjectId(req.params.id);
+        const musica = await Musica.findOneAndUpdate({ _id: id }, req.body, { new: true });
+        if (musica) {
+            res.json(musica);
+        } else {
+            res.status(404).json({ msg: "Música não encontrada" });
+        }
+    } catch (err) {
+        res.status(422).json({ msg: "Erro ao atualizar a música" });
+    }
 }
 
 async function remover(req, res) {
-    const id = new mongoose.Types.ObjectId(req.params.id);
-    const musica = await Musica.findOneAndDelete({ _id: id });
-    res.status(204).end()
+    try {
+        const id = new mongoose.Types.ObjectId(req.params.id);
+        const musica = await Musica.findOneAndDelete({ _id: id });
+        if (musica) {
+            res.status(204).end();
+        } else {
+            res.status(404).json({ msg: "Música não encontrada" });
+        }
+    } catch (err) {
+        res.status(422).json({ msg: "Erro ao remover a música" });
+    }
 }
 
 module.exports = { validar, criar, listarTodos, buscarPeloId, obter, atualizar, remover };
 
-
-module.exports = { validar, criar };
