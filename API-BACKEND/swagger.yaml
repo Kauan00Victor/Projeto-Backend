@@ -25,4 +25,39 @@ paths:
             appication/json:
               schema:
                 $ref: '#/components/schemas/Mensagem'
+          get:
+      tags:
+        - musicas
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArrayOfmusicas'
+      security: 
+        - JWTAuth : []
+    /musicas/{id}:
+    get:
+      tags:
+        - musicas
+      parameters:
+        - in: path
+          type: string
+          name: id
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Musicas'
+        400:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schema/Mensagem'
+        404:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schema/Mensagem'
 components:
