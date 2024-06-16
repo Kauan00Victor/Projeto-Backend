@@ -1,7 +1,28 @@
 openapi: 3.0.0
 info:
-  title: API Spotify
+  title: API SPOTIFY
   version: 0.0.1
 tags:
+  - musicas
 paths:
+  /musicas:
+    post: 
+      tags:
+        - musicas
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Musicas'
+      responses:
+        201:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Musicas'
+        422:
+          content:
+            appication/json:
+              schema:
+                $ref: '#/components/schemas/Mensagem'
 components:
