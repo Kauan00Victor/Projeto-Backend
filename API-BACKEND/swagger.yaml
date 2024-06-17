@@ -1,7 +1,279 @@
 openapi: 3.0.0
 info:
-  title: API Spotify
+  title: API SPOTIFY
   version: 0.0.1
+  description: API para gerenciamento de usuários no sistema Spotify e operações relacionadas a músicas.
 tags:
+  - name: users
+    description: Operações relacionadas aos usuários.
+  - name: musicas
+    description: Operações relacionadas às músicas.
 paths:
+  /users:
+    post:
+      tags:
+        - users
+      summary: Cria um novo usuário
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UsuarioInput'
+      responses:
+        201:
+          description: Usuário criado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsuarioOutput'
+        500:
+          description: Erro ao criar usuário
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /users/login:
+    post:
+      tags:
+        - users
+      summary: Faz login de um usuário
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginInput'
+      responses:
+        200:
+          description: Login realizado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Token'
+        400:
+          description: Credenciais inválidas
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        401:
+          description: Acesso negado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        500:
+          description: Erro ao fazer login
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /users/renovar:
+    post:
+      tags:
+        - users
+      summary: Renova o token de um usuário
+      parameters:
+        - in: header
+          name: Authorization
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Token renovado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Token'
+        400:
+          description: Token não enviado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        401:
+          description: Token inválido
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /musicas:
+    post:
+      tags:
+        - musicas
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Musicas'
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Musicas'
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mensagem'
+    get:
+      tags:
+        - musicas
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArrayOfMusicas'
+      security:
+        - JWTAuth: []
+  /musicas/{id}:
+    get:
+      tags:
+        - musicas
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Musicas'
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mensagem'
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mensagem'
+    put:
+      tags:
+        - musicas
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Musicas'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Musicas'
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mensagem'
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mensagem'
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mensagem'
+    delete:
+      tags:
+        - musicas
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+      responses:
+        '204':
+          description: No Content
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mensagem'
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mensagem'
 components:
+  securitySchemes:
+    JWTAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+  schemas:
+    UsuarioInput:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+          example: usuario@example.com
+        senha:
+          type: string
+          format: password
+          example: senha123
+    UsuarioOutput:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 60d21b4667d0d8992e610c85
+        email:
+          type: string
+          format: email
+          example: usuario@example.com
+    LoginInput:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+          example: usuario@example.com
+        senha:
+          type: string
+          format: password
+          example: senha123
+    Token:
+      type: object
+      properties:
+        token:
+          type: string
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+    Error:
+      type: object
+      properties:
+        msg:
+          type: string
+          example: "Mensagem de erro"
+    ArrayOfMusicas:
+      type: array
+      items:
+        $ref: '#/components/schemas/Musicas'
+    Musicas:
+      type: object
+      properties:
+        cantor:
+          type: string
+        nome:
+          type: string
+    Mensagem:
+      type: object
+      properties:
+        msg:
+          type: string
