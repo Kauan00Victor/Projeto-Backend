@@ -44,7 +44,7 @@ describe('API Spotify', () => {
 
     test("Deve retornar 404 e um JSON para GET /musicas/id", async () => {
         const result = await request
-            .get(`/musicas/id`);
+            .get(`/musicas/6670c0fd3dc28a4e76428d55`);
         expect(result.status).toBe(404);
         expect(result.type).toBe("application/json");
     });
@@ -63,7 +63,7 @@ describe('API Spotify', () => {
 
     test("Deve retornar 404 e um JSON para PUT /musicas/id", async () => {
         const result = await request
-            .put(`/musicas/id`);
+            .put(`/musicas/6670c0fd3dc28a4e76428d53`);
         expect(result.status).toBe(404);
         expect(result.type).toBe("application/json");
     });
@@ -94,7 +94,7 @@ describe('API Spotify', () => {
 
     test("Deve retornar 404 e um JSON para DELETE /musicas/id", async () => {
         const result = await request
-            .delete(`/musicas/id`);
+            .delete(`/musicas/6670c0fd3dc28a4e76428d57`);
         expect(result.status).toBe(404);
         expect(result.type).toBe("application/json");
 
